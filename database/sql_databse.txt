@@ -1,0 +1,106 @@
+-- --------------------------------------------------------
+-- Host:                         127.0.0.1
+-- Versión del servidor:         8.0.31 - MySQL Community Server - GPL
+-- SO del servidor:              Win64
+-- HeidiSQL Versión:             12.5.0.6677
+-- --------------------------------------------------------
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+-- Volcando estructura para tabla costos_viaje.datos_base_camion
+CREATE TABLE IF NOT EXISTS `datos_base_camion` (
+  `id_datos_base_camion` int NOT NULL AUTO_INCREMENT,
+  `concepto` varchar(50) NOT NULL,
+  `importe/km` double NOT NULL,
+  PRIMARY KEY (`id_datos_base_camion`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=9;
+
+-- Volcando datos para la tabla costos_viaje.datos_base_camion: ~8 rows (aproximadamente)
+INSERT INTO `datos_base_camion` (`id_datos_base_camion`, `concepto`, `importe/km`) VALUES
+	(1, 'Costo por llanta', 5000),
+	(2, 'Vida util KM por llanta', 100000),
+	(3, 'Pago operador X dia', 330.63),
+	(4, 'Pago ayudante X dia', 316.25),
+	(5, 'Dias x año sin domingos', 313),
+	(6, 'Linea cel datos GPS mensual en pesos', 69.6),
+	(7, 'Linea celular operador mensual', 232),
+	(8, 'Plataforma GPS mensual en USD', 5.8);
+
+-- Volcando estructura para tabla costos_viaje.datos_base_custodia
+CREATE TABLE IF NOT EXISTS `datos_base_custodia` (
+  `id_datos_base_custodia` int NOT NULL AUTO_INCREMENT,
+  `concepto` varchar(50) NOT NULL,
+  `importe/km` double NOT NULL,
+  PRIMARY KEY (`id_datos_base_custodia`)
+) ENGINE=InnoDB AUTO_INCREMENT=12;
+
+-- Volcando datos para la tabla costos_viaje.datos_base_custodia: ~11 rows (aproximadamente)
+INSERT INTO `datos_base_custodia` (`id_datos_base_custodia`, `concepto`, `importe/km`) VALUES
+	(1, 'Costo por llanta', 1000),
+	(2, 'Vida util KM por llanta', 50000),
+	(3, 'Pago operador X dia', 375),
+	(4, 'Pago ayudante X dia ', 0),
+	(5, 'Intervalo mntto en Km', 10000),
+	(6, 'Cantidad de llantas', 4),
+	(7, 'Costo mntto x auto', 1500),
+	(8, 'Dias x año sin domingos', 313),
+	(9, 'Plataforma GPS mensual en pesos', 110.2),
+	(10, 'Linea cel datos GPS mensual en pesos', 69.6),
+	(11, 'Linea celular operador mensual', 232);
+
+-- Volcando estructura para tabla costos_viaje.datos_camion
+CREATE TABLE IF NOT EXISTS `datos_camion` (
+  `id_camion` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(20) NOT NULL,
+  `placas` varchar(10) DEFAULT NULL,
+  `serie` varchar(10) DEFAULT NULL,
+  `cantidad_llantas` int NOT NULL,
+  `cto_poliza_seguro` double NOT NULL DEFAULT (0),
+  `rendimiento_kmxl` double NOT NULL DEFAULT (0),
+  `pago_operador` double DEFAULT (0),
+  `intervalo_mantto_enkm` double NOT NULL DEFAULT '0',
+  `cto_mantto` double NOT NULL DEFAULT '0',
+  `depreciacion_anual` double NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id_camion`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=7;
+
+-- Volcando datos para la tabla costos_viaje.datos_camion: ~6 rows (aproximadamente)
+INSERT INTO `datos_camion` (`id_camion`, `nombre`, `placas`, `serie`, `cantidad_llantas`, `cto_poliza_seguro`, `rendimiento_kmxl`, `pago_operador`, `intervalo_mantto_enkm`, `cto_mantto`, `depreciacion_anual`) VALUES
+	(1, 'Eco1', NULL, NULL, 6, 12159.18, 3.2, 200, 20000, 7790, 25000),
+	(2, 'Eco2', NULL, NULL, 6, 14908.73, 3.4, 200, 15000, 7790, 25000),
+	(3, 'Eco3', NULL, NULL, 10, 17000.21, 3.1, 300, 15000, 7790, 56000),
+	(4, 'Eco6', NULL, NULL, 6, 15243.33, 3.4, 200, 15000, 7790, 25000),
+	(5, 'Hino', NULL, NULL, 6, 21396.68, 5, 200, 10000, 4900, 25000),
+	(6, 'Trailer', NULL, NULL, 18, 41604.85, 2.1, 400, 15000, 7790, 140000);
+
+-- Volcando estructura para tabla costos_viaje.datos_custodia
+CREATE TABLE IF NOT EXISTS `datos_custodia` (
+  `id_custidia` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(50) NOT NULL,
+  `placas` varchar(50) DEFAULT NULL,
+  `serie` varchar(50) DEFAULT NULL,
+  `depreciacion_anual` double NOT NULL,
+  `cto_poliza_seguro` double NOT NULL,
+  `rendimiento_kmxl` double NOT NULL,
+  PRIMARY KEY (`id_custidia`)
+) ENGINE=InnoDB AUTO_INCREMENT=5;
+
+-- Volcando datos para la tabla costos_viaje.datos_custodia: ~4 rows (aproximadamente)
+INSERT INTO `datos_custodia` (`id_custidia`, `nombre`, `placas`, `serie`, `depreciacion_anual`, `cto_poliza_seguro`, `rendimiento_kmxl`) VALUES
+	(1, 'Tsuru', NULL, NULL, 12668.33, 5327.55, 13),
+	(2, 'Tiida', NULL, NULL, 20975.1, 6199.5, 16),
+	(3, 'Tornado', NULL, NULL, 27060, 10477.75, 12),
+	(4, 'City', NULL, NULL, 13950, 4810.48, 13);
+
+/*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;

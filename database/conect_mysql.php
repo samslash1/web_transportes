@@ -1,0 +1,41 @@
+<?php
+// Conexión a la base de datos
+$servername = "localhost";
+$username = "root";
+$password = "Admin123$";
+$dbname = "costos_viaje";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+if ($conn->connect_error) {
+    die("Error de conexión: " . $conn->connect_error);
+} 
+
+$tbl_datos_camion = $conn->query("SELECT * FROM datos_camion");
+$datos_camion =  $tbl_datos_camion->fetch_all(MYSQLI_ASSOC);
+
+$tbl_datos_custodia = $conn->query("SELECT * FROM datos_custodia");
+$datos_custodia =  $tbl_datos_custodia->fetch_all(MYSQLI_ASSOC);
+
+$tbl_db_camion = $conn->query("SELECT * FROM datos_base_camion");
+$db_camion = $tbl_db_camion->fetch_all(MYSQLI_ASSOC);
+
+$tbl_db_custodia = $conn->query("SELECT * FROM datos_base_custodia");
+$db_custodia =  $tbl_db_custodia->fetch_all(MYSQLI_ASSOC);
+
+$conn->close(); // cerrar la coneccion a la base de datos
+
+$response = array(
+    'datos_camion' => $datos_camion,
+    'datos_custodia' => $datos_custodia,
+    'db_camion' => $db_camion,
+    'db_custodia' => $db_custodia
+);
+
+// Configura las cabeceras HTTP para indicar que la respuesta es en formato JSON.
+header('Content-Type: application/json');
+
+// Imprime los datos en formato JSON.
+echo json_encode($response);
+
+?>

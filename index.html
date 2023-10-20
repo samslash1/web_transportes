@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Costo de Viaje</title>
+
+    <!--estilos-->
+    <link rel="stylesheet" type="text/css" href="bootstrap-5.3.2-dist/css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="css/styles.css" />
+    <link rel="stylesheet" type="text/css" href="css/normalize.css" />
+    <!--estilos-->
+    
+    <!--fuente-->
+    <link rel="preconnect" href="https://fonts.googleapis.com"> 
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&family=Noto+Color+Emoji&display=swap" rel="stylesheet">
+    <!--fuente-->
+
+  </head>
+
+  <body class="bg-body">
+
+    <header class="container d-flex flex-wrap align-items-center justify-content-between mb-2 border-bottom">
+      <img class="logo" src="images/logo.png" alt="futurama">
+      <h3>Cálculo costos de viaje</h3>
+    </header>
+
+    <form id="costoForm" class="container cont shadow mb-5 p-3 bg-body-secondary bg-opacity-2 card h-100">
+
+      <div class="grid-form nav nav-pills">  <!--contenedor-->
+
+        <div class="grid-form column-1 align-self-center"> <!--contenedor datos-->
+
+          <div class="form-floating">
+            <input type="number" class="form-control" id="precioDiesel" step="0.01" required placeholder=""/>
+            <label for="precioDiesel">Precio Diesel</label>
+          </div>
+
+          <div class="form-floating">
+            <input type="number" class="form-control" id="precioGasolina" step="0.01" required placeholder=""/>
+            <label for="precioGasolina">Precio gasolina</label>
+          </div>
+
+          <div class="form-floating">
+            <input type="number" class="form-control" id="montoCasetasCamion" step="0.01" required placeholder=""/>
+            <label for="montoCasetasCamion">Casetas Camion</label>
+          </div>
+
+          <div class="form-floating">
+            <input type="number" class="form-control" id="montoCasetasCus" step="0.01" required placeholder=""/>
+            <label for="montoCasetasCus">Casetas Custodia</label>
+          </div>
+
+          <div class="form-floating">
+            <input type="number" class="form-control" id="viaticosCamion" step="0.01" required placeholder="" />
+            <label for="viaticosCamion">Viáticos camion</label>
+          </div>
+
+          <div class="form-floating">
+            <input type="number" class="form-control" id="viaticosCus" step="1" required placeholder=""/>
+            <label for="viaticosCus">Viáticos custodia</label>
+          </div>
+
+          <hr class="full-width"/>
+
+          <div class="form-floating full-width">
+            <input type="number" class="form-control" id="tipoCambio" step="0.01" required placeholder=""/>
+            <label for="tipoCambio">Tipo de cambio</label>
+          </div>
+
+          <div class="form-floating full-width">
+            <input type="number" class="form-control" id="kmRecorrer" step="0.01" required placeholder=""/>
+            <label for="kmRecorrer">Kilómetros a recorrer</label>
+          </div>
+
+          <div class="form-floating full-width">
+            <input type="number" class="form-control" id="duracionDias" step="1" required placeholder=""/>
+            <label for="duracionDias">Días de duración</label>
+          </div>
+
+          <div class="form-floating">
+            <input type="submit" id="buttonCalcular" value="Calcular"/>
+          </div>
+
+        </div> <!--contenedor datos-->
+
+        <div class="grid-form"> <!--contenedor resultados-->
+
+          <div class=" form-control column-2 align-self-center align-self-baseline">
+
+            <div class="container btn-group btn-group-sm" role="group" aria-label="Small button group" > <!--radio botones -->
+
+              <input type="radio" class="btn-check" name="btnradio" id="eco1" autocomplete="off" checked/>
+              <label class="btn btn-outline-primary" for="eco1">Eco 1</label>
+
+              <input type="radio" class="btn-check" name="btnradio" id="eco2" autocomplete="off"/>
+              <label class="btn btn-outline-primary" for="eco2">Eco 2</label>
+
+              <input type="radio" class="btn-check" name="btnradio" id="eco3" autocomplete="off"/>
+              <label class="btn btn-outline-primary" for="eco3">Eco 3</label>
+
+              <input type="radio" class="btn-check" name="btnradio" id="eco6" autocomplete="off"/>
+              <label class="btn btn-outline-primary" for="eco6">Eco 6</label>
+
+              <input type="radio" class="btn-check" name="btnradio" id="hino" autocomplete="off"/>
+              <label class="btn btn-outline-primary" for="hino">Hino</label>
+
+              <input type="radio" class="btn-check" name="btnradio" id="trailer" autocomplete="off"/>
+              <label class="btn btn-outline-primary" for="trailer">Trailer</label>
+            
+            </div> <!--radio botones -->
+
+            <br />
+            <br />
+            
+            <h4>Camion: </h4>
+            
+            <table class="table table-hover" border="1"> <!--tabla de camion-->
+              <thead class="table-light">
+                <tr>
+                  <th></th>
+                  <th>Costo del Viaje</th>
+                  <th>Utilidad 35%</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tr>
+                <td></td>
+                <td id="ctoViajeCamion">-</td>
+                <td id="utilidadCam">-</td>
+                <td id="totalCamion">-</td>
+              </tr>
+            </table>
+            
+            
+            <h4>Custodia: </h4>
+            <table class="table table-hover" border="1"> <!--tabla de custodia-->
+              <thead class="table-light">
+                <tr>
+                  <th scope="col"></th>
+                  <th scope="col">Tsuru</th>
+                  <th scope="col">Tiida</th>
+                  <th scope="col">Tornado</th>
+                  <th scope="col">City</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <th></th>
+                  <th id="total_cust_tsuru">-</th>
+                  <th id="total_cust_tiida">-</th>
+                  <th id="total_cust_tornado">-</th>
+                  <th id="total_cust_city">-</th>
+                </tr>
+              </tbody>
+            </table>
+
+
+            <h4>Totales: </h4>
+            <table class="table table-hover" border="1"> <!--tabla de totales-->
+              <thead class="table-light">
+                <tr>
+                  <th scope="col"></th>
+                  <th scope="col">Tsuru</th>
+                  <th scope="col">Tiida</th>
+                  <th scope="col">Tornado</th>
+                  <th scope="col">City</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Traslado Camion + Custodia</th>
+                  <td id="tcc_tsuru">-</td>
+                  <td id="tcc_tiida">-</td>
+                  <td id="tcc_tornado">-</td>
+                  <td id="tcc_city">-</td>
+                </tr>
+                <tr>
+                  <th scope="row">50% de custodia</th>
+                  <td id="cust_tsuru">-</td>
+                  <td id="cust_tiida">-</td>
+                  <td id="cust_tornado">-</td>
+                  <td id="cust_city">-</td>
+                </tr>
+                <tr>
+                  <th scope="row">Costo de camion + 50% de custodia</th>
+                  <td id="cc_tsuru">-</td>
+                  <td id="cc_tiida">-</td>
+                  <td id="cc_tornado">-</td>
+                  <td id="cc_city">-</td>
+                </tr>
+              </tbody>
+            </table>
+
+
+
+
+
+
+          </div>
+
+        </div> <!--contenedor resultados-->
+
+      </div> <!--contenedor-->
+
+    </form>
+
+    <script src="script/script.js"></script>
+  </body>
+
+</html>
