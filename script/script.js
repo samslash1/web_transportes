@@ -4,7 +4,17 @@ document.addEventListener('DOMContentLoaded', function () {
   fetch('database/conect_mysql.php') 
     .then(response => response.json())
     .then(data => {
-    
+  
+      console.log(data);
+
+      // devuelve solo los items de un diccionario 
+      const listaCamiones = data.datos_camion.map(item => item.nombre);
+
+      for (var i = 0 ; i < listaCamiones.length; i++) {
+        console.log(listaCamiones[i])
+      }
+      
+      console.log(listaCamiones);
     // variables de objetos en html
     const costoForm = document.getElementById('costoForm');
 
