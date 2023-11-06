@@ -1,100 +1,59 @@
-import {rdb_camiones} from './rdb_camiones.js';
+import {chk_camiones} from './chk_camiones.js';
 import {tab_custodia} from './tab_custodia.js';
 
 document.addEventListener('DOMContentLoaded', function () {
   
   // cargar datos que vienen del php
-  fetch('database/conect_mysql.php') 
+  fetch('database/conect_db.php') 
   .then(response => response.json())
   .then(data => {
 
     // devuelve solo los items de un diccionario 
-    const listaCamiones = data.datos_camion.map(item => item.nombre);
-    rdb_camiones (listaCamiones);
-
-    const listacustodios = data.datos_custodia;
-    tab_custodia(listacustodios);
+    const id_ud = data.datos_envio.map(item => item.id_unidad);
+    const nombre_ud = data.datos_envio.map(item => item.nombre);
+    const combus_ud = data.datos_envio.map(item => item.combustible);
+    
+    chk_camiones (id_ud, nombre_ud, combus_ud); // coloca los checkbox
+    
+    // esta funcion coloca la tabla de autos custodios
+    const conceptosTotales = tab_custodia(data.datos_custodia);
 
     // variables de objetos en html
     const costoForm = document.getElementById('costoForm');
-
-    const ctoViajeCamion = document.getElementById('ctoViajeCamion');
+    // los checkbox
+    const chkbotons = document.querySelectorAll('input[name="btnradio"]');
+    // lugares donde van las tablas
+    const ctoViajeEnvio = document.getElementById('ctoViajeEnvio');
     const utilidadCam = document.getElementById('utilidadCam');
     const totalCamion = document.getElementById('totalCamion');
 
-    const total_cust_tsuru = document.getElementById('total_cust_tsuru');
-    const total_cust_tiida = document.getElementById('total_cust_tiida');
-    const total_cust_tornado = document.getElementById('total_cust_tornado');
-    const total_cust_city = document.getElementById('total_cust_city');
+    class calculo {
+      constructor(unidad) {
+        this.costo_llanta = parseFloat(unidad.costo_x_llanta);
+        this.vida_util_km_xllanta = parseFloat(unidad.vida_util_km_x_llanta);
+        this.pago_operad_xdia = parseFloat(unidad.pago_operador_x_dia);
+        this.pago_ayudan_xdia = parseFloat(unidad.pago_ayudante_x_dia);
+        this.dias_xano_sdomingos = parseFloat(313);
+        this.linea_cel_datos_GPS_mens_pesos = parseFloat(unidad.linea_cel_datos_gps_mensual);
+        this.linea_cel_operador_mens = parseFloat(unidad.linea_cel_operador_mensual);
+        this.plataforma_gps_mens_pesos = parseFloat(unidad.gps_mensual);
 
-    const tcc_tsuru = document.getElementById('tcc_tsuru');
-    const tcc_tiida = document.getElementById('tcc_tiida');
-    const tcc_tornado = document.getElementById('tcc_tornado');
-    const tcc_city = document.getElementById('tcc_city');
+        this.intervalo_mntto_km = parseFloat(unidad.intervalo_mntto_en_km);
+        this.costo_mntoo_xunidad = parseFloat(unidad.costo_mntto_x_ud);
+        this.depreciacion_anual = parseFloat(unidad.depreciacion_anual); //poner el 10%
 
-    const cust_tsuru = document.getElementById('cust_tsuru');
-    const cust_tiida = document.getElementById('cust_tiida');
-    const cust_tornado = document.getElementById('cust_tornado');
-    const cust_city = document.getElementById('cust_city');
-
-    const cc_tsuru = document.getElementById('cc_tsuru');
-    const cc_tiida = document.getElementById('cc_tiida');
-    const cc_tornado = document.getElementById('cc_tornado');
-    const cc_city = document.getElementById('cc_city');
-
-    class datosCamion {
-      constructor() {
-
-        // arrays que contienen los datos de las base de datos.
-        const php_dbCamion = data.db_camion;
-        
-        //constantes camion
-        this.costo_llanta = parseFloat(php_dbCamion[0]["importe/km"]);
-        this.vida_util_km_xllanta = parseFloat(php_dbCamion[1]["importe/km"]);
-        this.pago_operad_xdia = parseFloat(php_dbCamion[2]["importe/km"]);
-        this.pago_ayudan_xdia =parseFloat(php_dbCamion[3]["importe/km"]);
-        this.dias_xano_sdomingos = parseFloat(php_dbCamion[4]["importe/km"]);
-        this.linea_cel_datos_GPS_mens_pesos = parseFloat(php_dbCamion[5]["importe/km"]);
-        this.linea_cel_operador_mens = parseFloat(php_dbCamion[6]["importe/km"]);
-        this.plataforma_gps_mens_uds = parseFloat(php_dbCamion[7]["importe/km"]);
-      
-        // arrays que contienen los datos de las base de datos.
-        const php_datosCamion = data.datos_camion;
-        
-        // devuelve el radioboton seleccionado 
-        const camion_seleccionado = document.querySelector('input[name="btnradio"]:checked');
-
-        // esta funcion encuentra el id del array, partiendo desde el nombre, mismo que esta como id en radioboton
-        function buscarIdPorNombre(nombreBuscado) {
-          const camionEncontrado = php_datosCamion.find(camion => camion.nombre === nombreBuscado);
-          if (camionEncontrado) {
-              return camionEncontrado.id_camion - 1;
-          } else {
-              return null; 
-          }
-        }
-
-        let id_camion = buscarIdPorNombre (camion_seleccionado.id)
-        let camion = php_datosCamion[id_camion]
-
-        this.intervalo_mntto_km = parseFloat(camion.intervalo_mantto_enkm);
-        this.costo_mntoo_xcamion = parseFloat(camion.cto_mantto);
-        this.depreciacion_anual = parseFloat(camion.depreciacion_anual); //poner el 10%
-        // datos base constantes unicos del camion
-        this.cantidad_llantas = parseFloat(camion.cantidad_llantas);
-        this.costo_poliza_seguro_año = parseFloat(camion.cto_poliza_seguro);
-        this.rendimiento_kml = parseFloat(camion.rendimiento_kmxl);
-        this.pago_operador_eco = parseFloat(camion.pago_operador)
+        this.cantidad_llantas = parseFloat(unidad.cantidad_de_llantas);
+        this.costo_poliza_seguro_año = parseFloat(unidad.cto_pol_seg);
+        this.rendimiento_kml = parseFloat(unidad.rendimiento);
+        this.pago_operador_eco = parseFloat(unidad.pago_operador)
       } // termina constructor datosCamion
 
-      constantes_diarias(tipo_cambio) {
+      constantes_diarias() {
         const Sueldo_y_abono_xdia_operador = this.pago_operad_xdia;
         const Sueldo_y_abono_xdia_ayudante = this.pago_ayudan_xdia;
         const linea_celular_xdia_operador = this.linea_cel_operador_mens / 30;
-        const conplataforma_gps_mens_pesos =
-          this.plataforma_gps_mens_uds * tipo_cambio;
         const rastreo_satelital_xdia_plat_y_datos =
-          ((conplataforma_gps_mens_pesos + this.linea_cel_datos_GPS_mens_pesos) / 30) * 2;
+          ((this.plataforma_gps_mens_pesos + this.linea_cel_datos_GPS_mens_pesos) / 30) * 2;
         const depreciacion_diaria =
           this.depreciacion_anual / this.dias_xano_sdomingos;
         const poliza_seguro_xdia =
@@ -105,21 +64,18 @@ document.addEventListener('DOMContentLoaded', function () {
           Sueldo_y_abono_xdia_ayudante +
           linea_celular_xdia_operador +
           rastreo_satelital_xdia_plat_y_datos +
-          depreciacion_diaria +
-          poliza_seguro_xdia
-        );
+          depreciacion_diaria + poliza_seguro_xdia);
         
         return resultado
       }
-      
-      constantes_xkm(precio_disel_xlitro) {
-        const costo_total_llantas = this.costo_llanta * this.cantidad_llantas;
-        const costo_diesel_xkm = precio_disel_xlitro / this.rendimiento_kml;
-        const costo_xkm_llantas = costo_total_llantas / this.vida_util_km_xllanta;
-        const costo_mntto_xkm =
-          this.costo_mntoo_xcamion / this.intervalo_mntto_km;
 
-        return costo_diesel_xkm + costo_xkm_llantas + costo_mntto_xkm;
+      constantes_xkm(precio_combus_xlitro) {
+        const costo_total_llantas = this.costo_llanta * this.cantidad_llantas;
+        const costo_combus_xkm = precio_combus_xlitro / this.rendimiento_kml;
+        const costo_xkm_llantas = costo_total_llantas / this.vida_util_km_xllanta;
+        const costo_mntto_xkm = this.costo_mntoo_xunidad / this.intervalo_mntto_km;
+
+        return costo_combus_xkm + costo_xkm_llantas + costo_mntto_xkm;
       }
 
       variables_por_viaje(viaticos, casetasCamion) {
@@ -129,159 +85,19 @@ document.addEventListener('DOMContentLoaded', function () {
       }
 
       costo_total_viaje(
-        tipo_cambio,
-        duracionDias,
+        duracionDias, 
         kilometros_a_recorrer,
-        precio_disel_xlitro,
-        viaticos,
-        casetasCamion
-      ) {
-        const total_xdia_duracion_viaje =
-          this.constantes_diarias(tipo_cambio) * duracionDias;
-        const costo_total_km_recorridos =
-          kilometros_a_recorrer * this.constantes_xkm(precio_disel_xlitro);
-        const total_casetas_eco_viaticos_cop = this.variables_por_viaje(
-          viaticos,
-          casetasCamion
-        );
+        precio_combus_xlitro, 
+        viaticos, 
+        casetasCamion) {
+        const total_xdia_duracion_viaje = this.constantes_diarias() * duracionDias;
+        const costo_total_km_recorridos = kilometros_a_recorrer * this.constantes_xkm(precio_combus_xlitro);
+        const total_casetas_eco_viaticos_cop = this.variables_por_viaje(viaticos, casetasCamion);
 
         return (
-          total_xdia_duracion_viaje +
-          costo_total_km_recorridos +
-          total_casetas_eco_viaticos_cop
-        );
+          total_xdia_duracion_viaje + costo_total_km_recorridos + total_casetas_eco_viaticos_cop);
       }
     } // termina datosCamion
-
-    class datosCustodia {
-      constructor() {
-
-        const php_dbCustodia = data.db_custodia;
-
-        this.costoLlanta = parseFloat(php_dbCustodia[0]['importe/km']);
-        this.vidaUtil_km_xllanta = parseFloat(php_dbCustodia[1]['importe/km']);
-        this.pagoOperad_xdia = parseFloat(php_dbCustodia[2]['importe/km']);
-        this.intervalo_mntto_km = parseFloat(php_dbCustodia[4]['importe/km']);
-        this.cantidadLlantas = parseFloat(php_dbCustodia[5]['importe/km']);
-        this.costo_mntoo_xauto = parseFloat(php_dbCustodia[6]['importe/km']);
-        this.dias_xano_sdomingos = parseFloat(php_dbCustodia[7]['importe/km']);
-        this.plataforma_gps_mens_pesos = parseFloat(php_dbCustodia[8]['importe/km']);
-        this.linea_cel_datos_GPS_mens_pesos = parseFloat(php_dbCustodia[9]['importe/km']);
-        this.linea_cel_operador_mens = parseFloat(php_dbCustodia[10]['importe/km']);
-
-        const php_datosCustodia = data.datos_custodia;
-
-        console.log(php_datosCustodia);
-
-        this.dtosTsuru = [
-          parseFloat(php_datosCustodia[0]['depreciacion_anual']), 
-          parseFloat(php_datosCustodia[0]['cto_poliza_seguro']), 
-          parseFloat(php_datosCustodia[0]['rendimiento_kmxl'])
-        ];
-        
-        this.dtosTiida = [
-          parseFloat(php_datosCustodia[1]['depreciacion_anual']), 
-          parseFloat(php_datosCustodia[1]['cto_poliza_seguro']), 
-          parseFloat(php_datosCustodia[1]['rendimiento_kmxl'])
-        ];
-        
-        this.dtosTornado = [
-          parseFloat(php_datosCustodia[2]['depreciacion_anual']), 
-          parseFloat(php_datosCustodia[2]['cto_poliza_seguro']), 
-          parseFloat(php_datosCustodia[2]['rendimiento_kmxl'])
-        ];
-
-        this.dtosCity = [
-          parseFloat(php_datosCustodia[3]['depreciacion_anual']), 
-          parseFloat(php_datosCustodia[3]['cto_poliza_seguro']), 
-          parseFloat(php_datosCustodia[3]['rendimiento_kmxl'])
-        ];
-
-      } //termina constructor datosCustodia
-
-      // comiensan los metodos
-      const_diarias() {
-        const sueldo_ybono_xdia_oper = this.pagoOperad_xdia;
-        const linea_celular_xdia_operador = this.linea_cel_operador_mens / 30;
-        const rastreo_satelital_xdia_plat_y_datos =
-          (this.plataforma_gps_mens_pesos + this.linea_cel_datos_GPS_mens_pesos) /
-          30;
-
-        return (
-          sueldo_ybono_xdia_oper +
-          linea_celular_xdia_operador +
-          rastreo_satelital_xdia_plat_y_datos
-        );
-      }
-
-      const_diarias_xauto(valores, dias_xano_sdomingos) {
-        return (valores[0] + valores[1]) / dias_xano_sdomingos;
-      }
-
-      suma_diaria() {
-        return {
-          tsuru:
-            this.const_diarias() +
-            this.const_diarias_xauto(this.dtosTsuru, this.dias_xano_sdomingos),
-
-          tiida:
-            this.const_diarias() +
-            this.const_diarias_xauto(this.dtosTiida, this.dias_xano_sdomingos),
-
-          tornado:
-            this.const_diarias() +
-            this.const_diarias_xauto(this.dtosTornado, this.dias_xano_sdomingos),
-
-          city:
-            this.const_diarias() +
-            this.const_diarias_xauto(this.dtosCity, this.dias_xano_sdomingos),
-        };
-      }
-
-      cons_xkm(precioGasolina) {
-        const costoLlantas = this.costoLlanta * this.cantidadLlantas;
-        const costoPorKmLlantas = costoLlantas / this.vidaUtil_km_xllanta; // Vida útil de las llantas en km
-        const costoMantenimientoPorKm =
-          this.costo_mntoo_xauto / this.intervalo_mntto_km; // Costo de mantenimiento por cada
-
-        const suma_constantes_km = costoPorKmLlantas + costoMantenimientoPorKm;
-
-        return {
-          tsuru: suma_constantes_km + precioGasolina / this.dtosTsuru[2],
-          tiida: suma_constantes_km + precioGasolina / this.dtosTiida[2],
-          tornado: suma_constantes_km + precioGasolina / this.dtosTornado[2],
-          city: suma_constantes_km + precioGasolina / this.dtosCity[2],
-        };
-      }
-
-      costo_total_viajeCustodia(
-        precioGasolina,
-        duracionDias,
-        kmRecorrer,
-        montoCasetas,
-        viaticosCustidia
-      ) {
-        const sumaxkm = this.cons_xkm(precioGasolina);
-        const sumaDiaria = this.suma_diaria();
-        const var_xviaje = montoCasetas + viaticosCustidia;
-
-        function calculo(auto) {
-          const total_xdia_duracion_viaje = sumaDiaria[auto] * duracionDias;
-          const costo_total_km_recorridos = sumaxkm[auto] * kmRecorrer;
-
-          return (
-            total_xdia_duracion_viaje + costo_total_km_recorridos + var_xviaje
-          );
-        }
-
-        return {
-          tsuru: calculo('tsuru'),
-          tiida: calculo('tiida'),
-          tornado: calculo('tornado'),
-          city: calculo('city'),
-        };
-      }
-    } // termina datosCustodia
 
     function calculoGatos () {
 
@@ -289,43 +105,89 @@ document.addEventListener('DOMContentLoaded', function () {
       const precio_disel_xlitro = parseFloat(
         document.getElementById('precioDiesel').value);
 
-      const casetasCamion = parseFloat(
-        document.getElementById('montoCasetasCamion').value);
+      const casetas_camion = parseFloat(
+        document.getElementById('casetas_camion').value);
         
-      const viaticos = parseFloat(
-        document.getElementById('viaticosCamion').value);
+      const casetas_auto = parseFloat(
+        document.getElementById('casetas_auto').value);
 
-      // variables custidia
+      const casetas_camioneta = parseFloat(
+        document.getElementById('casetas_camioneta').value);
+          
+      const viaticos = parseFloat(
+        document.getElementById('viaticosEnvio').value);
+
       const precioGasolina = parseFloat(
         document.getElementById('precioGasolina').value);
 
-      const montoCasetas = parseFloat(
-        document.getElementById('montoCasetasCus').value);
 
       const viaticosCustidia = parseFloat(
         document.getElementById('viaticosCus').value);
 
       // variables generales
-      const tipo_cambio = parseFloat(document.getElementById('tipoCambio').value);
       const kmRecorrer = parseFloat(document.getElementById('kmRecorrer').value);
       const duracionDias = parseFloat(document.getElementById('duracionDias').value);
 
-      // calculo camion
-      const camion = new datosCamion();
-      const costoCamion = camion.costo_total_viaje(
-        tipo_cambio,
-        duracionDias,
-        kmRecorrer,
-        precio_disel_xlitro,
-        viaticos,
-        casetasCamion
-      );
+      /*  ###################################################  */
+
+      // array que contienen los datos de las base de datos.
+      const php_db = data.datos_envio;
+      // obtiene los checkboxes con el name "btnradio"
+      const checkboxes = document.querySelectorAll('input[name="btnradio"]:checked');
+      const unidad_seleccionada = [];
+      // almacena en una lista los id de cada checkbox
+      checkboxes.forEach(checkbox => {
+          unidad_seleccionada.push(checkbox.id);
+      });
+
+      let sumaCostos = 0
+
+      for (let e = 0; e < unidad_seleccionada.length; e++) {
+        let unidad = php_db.find(ud => ud.id_unidad === unidad_seleccionada[e] )
+
+        let combustible_ud;
+        switch (unidad.combustible) {
+          case 'diesel' :
+            combustible_ud = precio_disel_xlitro;
+            break;
+
+          case 'gasolina' :
+            combustible_ud = precioGasolina;
+            break;
+        }
+
+        let casetas;
+        switch (unidad.tipo_unidad) {
+          case 'camion' :
+            casetas = casetas_camion;
+            break;
+
+          case 'camioneta' :
+            casetas = casetas_camioneta;
+            break;
+
+          case 'auto' :
+            casetas = casetas_auto;
+            break;
+        }
+
+        // calculo camion
+        const envio = new calculo(unidad);
+        const costoEnvio = envio.costo_total_viaje( 
+          duracionDias,
+          kmRecorrer,
+          combustible_ud,
+          viaticos,
+          casetas);
+
+        sumaCostos += costoEnvio
+      }
 
       const porcUtilidad = 0.35;
-      const costoUtilidad = costoCamion * porcUtilidad;
-      const costoTotalCamion = costoCamion + costoUtilidad;
+      const costoUtilidad = sumaCostos * porcUtilidad;
+      const costoTotalCamion = sumaCostos + costoUtilidad;
 
-      ctoViajeCamion.textContent = `${costoCamion
+      ctoViajeEnvio.textContent = `${sumaCostos
         .toFixed(2)
         .replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
 
@@ -337,104 +199,103 @@ document.addEventListener('DOMContentLoaded', function () {
         .toFixed(2)
         .replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
 
+      /*  ###################################################  */
+
       // calculo custodia
-      const custodia = new datosCustodia();
-      const costoTotalCustodia = custodia.costo_total_viajeCustodia(
-        precioGasolina,
-        duracionDias,
-        kmRecorrer,
-        montoCasetas,
-        viaticosCustidia
-      );
-      
-//#############################################################
-      const tsuru = costoTotalCustodia.tsuru;
-      const tiida = costoTotalCustodia.tiida;
-      const tornado = costoTotalCustodia.tornado;
-      const city = costoTotalCustodia.city;
+        
+      const php_db_cust = data.datos_custodia;
 
-      total_cust_tsuru.textContent = `${tsuru
-        .toFixed(2)
-        .replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
-      total_cust_tiida.textContent = `${tiida
-        .toFixed(2)
-        .replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
-      total_cust_tornado.textContent = `${tornado
-        .toFixed(2)
-        .replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
-      total_cust_city.textContent = `${city
-        .toFixed(2)
-        .replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
-//#############################################################
+      let var_tcc_coche = 0 ;
+      let var_cust_coche = 0;
+      let var_cc_coche = 0;
 
-      const var_tcc_tsuru = costoCamion + tsuru;
-      const var_tcc_tidda = tiida + costoCamion;
-      const var_tcc_tornado = costoCamion + tornado;
-      const var_tcc_city = costoCamion + city;
+      function totales_generales (importe, id_concepto, id_cust) {
 
-      const var_cust_tsuru = tsuru / 2;
-      const var_cust_tidda = tiida / 2;
-      const var_cust_tornado = tornado / 2;
-      const var_cust_city = city / 2;
+        const total = document.getElementById(id_concepto + '_' + id_cust);//elemento del html
 
-      const var_cc_tsuru = costoCamion + var_cust_tsuru;
-      const var_cc_tidda = costoCamion + var_cust_tidda;
-      const var_cc_tornado = costoCamion + var_cust_tornado;
-      const var_cc_city = costoCamion + var_cust_city;
+        total.textContent = `${importe
+          .toFixed(2)
+          .replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
+      }
 
-      tcc_tsuru.textContent = `${var_tcc_tsuru
-        .toFixed(2)
-        .replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
-      tcc_tiida.textContent = `${var_tcc_tidda
-        .toFixed(2)
-        .replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
-      tcc_tornado.textContent = `${var_tcc_tornado
-        .toFixed(2)
-        .replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
-      tcc_city.textContent = `${var_tcc_city
-        .toFixed(2)
-        .replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
+      for (let i = 0; i < php_db_cust.length; i++ ) {
+        let ud_custodia = php_db_cust[i]
 
-      cust_tsuru.textContent = `${var_cust_tsuru
-        .toFixed(2)
-        .replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
-      cust_tiida.textContent = `${var_cust_tidda
-        .toFixed(2)
-        .replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
-      cust_tornado.textContent = `${var_cust_tornado
-        .toFixed(2)
-        .replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
-      cust_city.textContent = `${var_cust_city
-        .toFixed(2)
-        .replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
+        let comb_custudia;
+        switch (ud_custodia.combustible) {
+          case 'diesel' :
+            comb_custudia = precio_disel_xlitro;
+            break;
 
-      cc_tsuru.textContent = `${var_cc_tsuru
-        .toFixed(2)
-        .replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
-      cc_tiida.textContent = `${var_cc_tidda
-        .toFixed(2)
-        .replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
-      cc_tornado.textContent = `${var_cc_tornado
-        .toFixed(2)
-        .replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
-      cc_city.textContent = `${var_cc_city
-        .toFixed(2)
-        .replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
+          case 'gasolina' :
+            comb_custudia = precioGasolina;
+            break;
+        }
+
+        let casetas_cust;
+        switch (ud_custodia.tipo_unidad) {
+          case 'camion' :
+            casetas_cust = casetas_camion;
+            break;
+
+          case 'camioneta' :
+            casetas_cust = casetas_camioneta;
+            break;
+
+          case 'auto' :
+            casetas_cust = casetas_auto;
+            break;
+        }
+        const custodia = new calculo(ud_custodia);
+        const costoTotalCustodia = custodia.costo_total_viaje( 
+          duracionDias,
+          kmRecorrer,
+          comb_custudia,
+          viaticos,
+          casetas_cust);
+
+          const id_cust = ud_custodia.id_unidad
+          const id_total_cust = document.getElementById(id_cust) 
+
+          // total de cada custodia
+          id_total_cust.textContent =  `${costoTotalCustodia
+            .toFixed(2)
+            .replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
+  
+          // calculos por concepto de cada custodia
+          var_tcc_coche = (sumaCostos + costoTotalCustodia);
+          totales_generales(var_tcc_coche, conceptosTotales[0].id, id_cust);
+  
+          var_cust_coche = (costoTotalCustodia / 2);
+          totales_generales(var_cust_coche, conceptosTotales[1].id, id_cust);
+  
+          var_cc_coche = (sumaCostos + var_cust_coche)
+          totales_generales(var_cc_coche, conceptosTotales[2].id, id_cust);
+
+      }
 
     } // termina funcion calculoGastos
-
 
     costoForm.addEventListener('submit', function (e) {
       e.preventDefault();
 
-      calculoGatos ()
+      calculoGatos ();
 
     }); // termina evento submit
+
+    // por cada cambio en los checkbox
+    chkbotons.forEach(function(chkbotons) {
+      chkbotons.addEventListener('change', function(e){
+        e.preventDefault();
+
+        calculoGatos ();
+
+      })
+    })  // termina seleccionar checkbox
     
   }) 
   .catch(error => {
     console.error('Hubo un error:', error);
   })
-
 
 });

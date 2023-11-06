@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html id="html" lang="es" data-bs-theme="light">
+
+  <head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listas</title>
+
+    <!--estilos-->
+    <link rel="stylesheet" type="text/css" href="css/normalize.css" >
+    <link rel="stylesheet" type="text/css" href="css/theme.min.css">
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    
+  </head>
+
+  <body class="font-base">
+    
+
+
+    <main class="main" id="top">
+      <!--container-->
+      <div class="container" data-layout="container">
+
+        <!--content-->
+        <div class="content">
+          <!--nav-->
+          <nav class="navbar navbar-light navbar-glass navbar-top navbar-expand navbar-glass-shadow mb-2">
+            <!--logotipo-->
+            <div class="d-flex align-items-center">
+              <img class="m e-2" id="logotipo" src="images/Logo Fut Horizontal dark.png" alt="" width="140px" style="padding-left: 10px;">
+            </div>
+            <ul class="nav">
+              <li class="nav-item"><a class="nav-link active" href="index.html">Calculo</a></li>
+              <li class="nav-item"><a class="nav-link" href="listas.html">Listas</a></li>
+            </ul>
+            <!--checkbox darkmode-->
+            <div class="form-check form-switch ps-2 ms-auto flex-row">
+              <input class="form-check-input" id="switchDarkMode" type="checkbox" />
+              <label for="switchDarkMode">Dark Mode</label>
+            </div>
+            
+          </nav>
+          <!--termina nav horizontal-->
+
+          <div class="card mb-3">
+            <div class="bg-holder d-none d-lg-block bg-card" style="background-image:url(images/corner-3.png);"></div><!--/.bg-holder-->
+            <div class="card-body position-relative">
+              <div class="row">
+                <div class="col-lg-8">
+                  <h3>Tablas de datos</h3>
+                  <p class="mb-0 pt-1 mt-2 mb-0">
+                    La información se organiza en cuatro secciones principales: Datos de Camión y Custodia detallan características específicas, costos y rendimiento de camiones y vehículos de custodia. Las bases de datos asociadas, para camiones y para custodia, presentan elementos gestión, como costos por llanta, mantenimiento, pagos diarios entre otros.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row g-3 mb-3"> <!--por cada bloque de widgets-->
+
+              <div id="tablesContainer">
+                <!--aqui van las tablas-->
+              </div> <!--card-->
+
+          </div> <!--termina bloque de widgets-->
+
+        </div>
+        <!--termina content-->
+
+      </div>
+      <!--termina container-->
+
+    </main>
+    
+    <div class="container">
+      <footer class="py-3 my-4">
+        <ul class="nav justify-content-center border-bottom pb-3 mb-3"></ul>
+        <p class="text-center text-body-secondary">2023 Centro Automotriz Futurama, SA de CV</p>
+      </footer>
+    </div>
+
+    <script src="script/list.js"></script>
+    <script src="script/darkmode.js"></script>
+
+  </body>
+
+</html>

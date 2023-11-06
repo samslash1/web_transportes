@@ -15,90 +15,91 @@
   </head>
 
   <body class="font-base">
+    
     <main class="main" id="top">
       <!--container-->
       <div class="container" data-layout="container">
-        <!--nav-->
-        <nav class="navbar navbar-light navbar-glass navbar-top navbar-expand navbar-glass-shadow mb-2">
 
-          <div class="d-flex align-items-center ">
-            <img class="me-2" id="logotipo" src="images/Logo Fut Horizontal dark.png" alt="" width="140px" style="padding-left: 10px;">
-          </div>
-
-          <ul class=" ms-auto flex-row">
-
-            <div class="form-check form-switch ps-2">
+        <!--content-->
+        <div class="content">
+          <!--nav-->
+          <nav class="navbar navbar-light navbar-glass navbar-top navbar-expand navbar-glass-shadow mb-2">
+            <!--logotipo-->
+            <div class="d-flex align-items-center">
+              <img class="m e-2" id="logotipo" src="images/Logo Fut Horizontal dark.png" alt="" width="140px" style="padding-left: 10px;">
+            </div>
+            <ul class="nav">
+              <li class="nav-item"><a class="nav-link active" href="index.html">Calculo</a></li>
+              <li class="nav-item"><a class="nav-link" href="listas.html">Listas</a></li>
+            </ul>
+            <!--checkbox darkmode-->
+            <div class="form-check form-switch ps-2 ms-auto flex-row">
               <input class="form-check-input" id="switchDarkMode" type="checkbox" />
               <label for="switchDarkMode">Dark Mode</label>
             </div>
-
-          </ul>
-
-        </nav>
-        <!--termina nav-->
-        
-        <!--content-->
-        <div class="content">
+            
+          </nav>
+          <!--termina nav horizontal-->
 
           <div class="row g-3 mb-3"> <!--por cada bloque de widgets-->
 
             <div class="col-md-6 col-lg-4 "> <!--widget-->
-              <div class="card shadow h-100">
+              <div class="card shadow ">
                 <div class="card-header pb-0"> <!--encabezado card-->
                   <h5 class="mb-2">Datos</h5>
                 </div>
   
-                <div class="card-body bg-line-chart-gradient pb-0 "> <!--cuerpo card-->
+                <div class="card-body bg-line-chart-gradient pb-0 " > <!--cuerpo card-->
                   <form id="costoForm">
                     
                     <div class="grid-form">
-                      
+
                       <div class="form-floating">
                         <input type="number" class="form-control" id="precioDiesel" step="0.01" placeholder=""/>
                         <label for="precioDiesel">Precio Diesel</label>
                       </div>
-            
+
                       <div class="form-floating">
                         <input type="number" class="form-control" id="precioGasolina" step="0.01" placeholder=""/>
                         <label for="precioGasolina">Precio gasolina</label>
                       </div>
-            
+
                       <div class="form-floating">
-                        <input type="number" class="form-control" id="montoCasetasCamion" step="0.01" placeholder=""/>
-                        <label for="montoCasetasCamion">Casetas Camion</label>
+                        <input type="number" class="form-control" id="casetas_camion" step="0.01" placeholder=""/>
+                        <label for="casetas_camion">Casetas Camion</label>
                       </div>
-            
+
                       <div class="form-floating">
-                        <input type="number" class="form-control" id="montoCasetasCus" step="0.01" placeholder=""/>
-                        <label for="montoCasetasCus">Casetas Custodia</label>
+                        <input type="number" class="form-control" id="casetas_auto" step="0.01" placeholder=""/>
+                        <label for="casetas_auto">Casetas auto</label>
                       </div>
-            
+                      
+                      <div class="form-floating full-width">
+                        <input type="number" class="form-control" id="casetas_camioneta" step="0.01" placeholder=""/>
+                        <label for="casetas_camioneta">Casetas Camioneta</label>
+                      </div>
+
                       <div class="form-floating">
-                        <input type="number" class="form-control" id="viaticosCamion" step="0.01" placeholder="" />
-                        <label for="viaticosCamion">Viáticos camion</label>
+                        <input type="number" class="form-control" id="viaticosEnvio" step="0.01" placeholder="" />
+                        <label for="viaticosCamion">Viáticos Envio</label>
                       </div>
-            
+
                       <div class="form-floating mb-3">
                         <input type="number" class="form-control" id="viaticosCus" step="0.01" placeholder=""/>
                         <label for="viaticosCus">Viáticos custodia</label>
                       </div>
-            
-                      <div class="form-floating full-width">
-                        <input type="number" class="form-control" id="tipoCambio" step="0.01" placeholder=""/>
-                        <label for="tipoCambio">Tipo de cambio</label>
-                      </div>
-            
+
                       <div class="form-floating full-width">
                         <input type="number" class="form-control" id="kmRecorrer" step="0.01" placeholder=""/>
                         <label for="kmRecorrer">Kilómetros a recorrer</label>
                       </div>
-            
+
                       <div class="form-floating full-width">
-                        <input type="number" class="form-control" id="duracionDias" step="0.01" placeholder=""/>
+                        <input type="number" class="form-control" id="duracionDias" step="1" placeholder=""/>
                         <label for="duracionDias">Días de duración</label>
                       </div>
-            
-                      <input class="btn btn-primary mb-3" type="submit" id="buttonCalcular" value="Calcular"/>
+
+                      <input class="btn btn-secondary me-1 mb-3" type="submit" id="buttonCalcular" value="Calcular"/>
 
                     </div>
                   </form>
@@ -111,15 +112,15 @@
               <div class="card h-100">
                 <div class="card-header container pb-0"> <!--encabezado card-->
                   
-                  <div class=" btn-group-sm" id="rdb_camiones" role="group"></div> <!--radiobotones-->
+                  <div class="btn-group-sm" id="chk_camiones" role="group"></div> <!--radiobotones-->
                   
                 </div>
-                <div class="card-body p-3"> <!--cuerpo card-->
+                <div class="card-body p-3 "> <!--cuerpo card-->
                   
                   <!--comienza tablas-->
                   <div class="table-responsive scrollbar " >
                     
-                    <h5 class="mb-1">Camion: </h5>
+                    <h5 class="mb-1">Envio: </h5>
                     <table class="table table-hover table-sm table-bordered table-striped fs--3">
                       <thead class="bg-200">
                         <tr>
@@ -130,7 +131,7 @@
                       </thead>
                       <tbody>
                         <tr>
-                          <td class="text-center" id="ctoViajeCamion">-</td>
+                          <td class="text-center" id="ctoViajeEnvio">-</td>
                           <td class="text-center" id="utilidadCam">-</td>
                           <td class="text-center" id="totalCamion">-</td>
                         </tr>
@@ -159,9 +160,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
                           <!--aqui van las filas-->
-                        </tr>
                       </tbody>
                     </table>
 
@@ -181,8 +180,15 @@
       <!--termina container-->
 
     </main>
+    
+    <div class="container">
+      <footer class="py-3 my-4">
+        <ul class="nav justify-content-center border-bottom pb-3 mb-3"></ul>
+        <p class="text-center text-body-secondary">2023 Centro Automotriz Futurama, SA de CV</p>
+      </footer>
+    </div>
 
-    <script type="module" src="script/script copy.js"></script>
+    <script type="module" src="script/script.js"></script>
     <script src="script/darkmode.js"></script>
     
   </body>

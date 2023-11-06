@@ -1,106 +1,44 @@
--- --------------------------------------------------------
--- Host:                         127.0.0.1
--- Versión del servidor:         8.0.31 - MySQL Community Server - GPL
--- SO del servidor:              Win64
--- HeidiSQL Versión:             12.5.0.6677
--- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS uds (
+  id_unidad int NOT NULL AUTO_INCREMENT,
+  nombre varchar(30) NOT NULL DEFAULT "Desconocido",
+  tipo_unidad varchar(20) NOT NULL,
+  uso varchar(20) NOT NULL,
+  combustible varchar(20) NOT NULL,
+  ubicacion varchar(10) NOT NULL,
+  marca varchar(50) NOT NULL,
+  modelo varchar(10) NOT NULL,
+  no_serie varchar(25) NOT NULL,
+  cto_pol_seg float NOT NULL,
+  depreciacion_anual float NOT NULL,
+  rendimiento float NOT NULL,
+  costo_x_llanta float NOT NULL,
+  vida_util_km_x_llanta float NOT NULL,
+  pago_operador_x_dia float NOT NULL,
+  pago_ayudante_x_dia float NOT NULL,
+  intervalo_mntto_en_km float NOT NULL,
+  costo_mntto_x_ud float NOT NULL,
+  gps_mensual float NOT NULL,
+  linea_cel_datos_gps_mensual float NOT NULL,
+  linea_cel_operador_mensual float NOT NULL,
+  cantidad_de_llantas int NOT NULL,
+  pago_operador float NOT NULL,
+  PRIMARY KEY (id_unidad));
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET NAMES utf8 */;
-/*!50503 SET NAMES utf8mb4 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+INSERT INTO uds (id_unidad, nombre, tipo_unidad, uso, combustible, ubicacion, marca, modelo, no_serie, cto_pol_seg, depreciacion_anual, rendimiento, costo_x_llanta, vida_util_km_x_llanta, pago_operador_x_dia, pago_ayudante_x_dia, intervalo_mntto_en_km, costo_mntto_x_ud, gps_mensual, linea_cel_datos_gps_mensual, linea_cel_operador_mensual, cantidad_de_llantas, pago_operador) VALUES
+	(1, 'eco01', 'camion', 'envio', 'diesel', 'cvca', 'INTERNACIONALCAMION 4700-175 NAVISTAR', '2000', '3HTNAAAR7YN127548', 17912.7, 25000, 3.2, 5000, 100000, 606.44, 335.42, 15000, 9036.4, 113.1, 69.6, 232, 6, 200),
+	(2, 'eco02', 'camion', 'envio', 'diesel', 'cvca', 'INTERNACIONAL CAMION 4400-215 NAVISTAR', '2006', '3HAMMAAR86L325690', 20908, 25000, 3.6, 5000, 100000, 606.44, 335.42, 15000, 9036.4, 113.1, 69.6, 232, 6, 200),
+	(3, 'eco03', 'camion', 'envio', 'diesel', 'cvca', 'INTERNACIONAL CAMION 4400-215 NAVISTAR', '2009', '3HANKAAR89L106887', 30398.7, 56000, 3.1, 5000, 100000, 606.44, 335.42, 15000, 9036.4, 113.1, 69.6, 232, 10, 300),
+	(4, 'eco04', 'camion', 'envio', 'diesel', 'cvca', 'FREIGHTLINER M2 35K', '2020', '3ALACYF37LDMC2984', 48369.2, 25000, 3.7, 5000, 100000, 606.44, 335.42, 24000, 9036.4, 113.1, 69.6, 232, 10, 200),
+	(5, 'eco06', 'camion', 'envio', 'diesel', 'cvca', 'FREIGHTLINER CAMION M2 52K', '2006', '1FVACWDC96HW56666', 26897.8, 25000, 3.5, 5000, 100000, 606.44, 335.42, 15000, 9036.4, 113.1, 69.6, 232, 6, 200),
+	(6, 'hino08', 'camion', 'envio', 'diesel', 'cvca', 'HINO CAMION CHASIS CABINA 816 SUPER LONG', '2017', 'JHHYEP0H5HK002004', 20577.3, 25000, 6.2, 5000, 100000, 606.44, 335.42, 10000, 6380, 113.1, 69.6, 232, 6, 200),
+	(7, 'np300_die_bca', 'camioneta', 'envio', 'diesel', 'cvca', 'NISSAN CHASIS DIESEL 4X4 VERSION ESPECIAL', '2012', '3N6PD25YXCK031585', 6072.33, 15000, 9.2, 3000, 50000, 361.37, 0, 15000, 4800, 113.1, 69.6, 180.17, 4, 0),
+	(8, 'np300_nva', 'camioneta', 'envio', 'diesel', 'cvca', 'NISSAN', '2017', '3N6CD35A2HK855921', 12389.3, 15000, 8.2, 3000, 50000, 361.37, 0, 15000, 4800, 113.1, 69.6, 180.17, 4, 0),
+	(9, 'sprinter_van_1c', 'camioneta', 'envio', 'diesel', 'cvca', 'MERCEDES BENZ 416 CDI EXTRALARGA', '2019', 'WD3YF4A96KP108164', 26904, 15000, 11, 3000, 50000, 361.37, 0, 30000, 4800, 113.1, 69.6, 180.17, 4, 0),
+	(10, 'sprinter_1e_chasis', 'camioneta', 'envio', 'diesel', 'cvca', 'CHASIS CABINA 516 LARGA', '2020', 'W1X8D33Z8LN093764', 20433.5, 15000, 8.5, 3000, 50000, 361.37, 0, 30000, 4800, 113.1, 69.6, 180.17, 4, 0),
+	(11, 'sprinter_1g_chasis', 'camioneta', 'envio', 'diesel', 'cvca', 'CHASIS CABINA 516 LARGA', '2021', 'W1X8D33Z3MN139809', 20433.5, 15000, 8.5, 3000, 50000, 361.37, 0, 30000, 4800, 113.1, 69.6, 180.17, 4, 0),
+	(12, 'city', 'auto', 'custodia', 'gasolina', 'cvca', 'HONDA', '2010', '93HGM2649AZ803427', 5813.53, 13950, 13, 1000, 50000, 361.37, 0, 10000, 1500, 113.1, 69.6, 180.17, 4, 0),
+	(13, 'tiida', 'auto', 'custodia', 'gasolina', 'cvca', 'NISSAN', '2016', '3N1CC1AD6GK207753', 5567.43, 20975.1, 19, 1000, 50000, 361.37, 0, 10000, 1500, 113.1, 69.6, 180.17, 4, 0),
+	(14, 'tornado_2011', 'camioneta', 'envio', 'gasolina', 'cvca', 'CHEVROLET', '2011', '93CXM8025BC114425', 4447.25, 27060, 14, 1000, 50000, 361.37, 0, 10000, 1500, 113.1, 69.6, 180.17, 4, 0),
+	(15, 'tsuru', 'auto', 'custodia', 'gasolina', 'cvca', 'NISSAN', '2008', '3N1EB31S18K345854', 3878.96, 12668.3, 18, 1000, 50000, 361.37, 0, 10000, 1500, 113.1, 69.6, 180.17, 4, 0);
 
--- Volcando estructura para tabla costos_viaje.datos_base_camion
-CREATE TABLE IF NOT EXISTS `datos_base_camion` (
-  `id_datos_base_camion` int NOT NULL AUTO_INCREMENT,
-  `concepto` varchar(50) NOT NULL,
-  `importe/km` double NOT NULL,
-  PRIMARY KEY (`id_datos_base_camion`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=9;
 
--- Volcando datos para la tabla costos_viaje.datos_base_camion: ~8 rows (aproximadamente)
-INSERT INTO `datos_base_camion` (`id_datos_base_camion`, `concepto`, `importe/km`) VALUES
-	(1, 'Costo por llanta', 5000),
-	(2, 'Vida util KM por llanta', 100000),
-	(3, 'Pago operador X dia', 330.63),
-	(4, 'Pago ayudante X dia', 316.25),
-	(5, 'Dias x año sin domingos', 313),
-	(6, 'Linea cel datos GPS mensual en pesos', 69.6),
-	(7, 'Linea celular operador mensual', 232),
-	(8, 'Plataforma GPS mensual en USD', 5.8);
-
--- Volcando estructura para tabla costos_viaje.datos_base_custodia
-CREATE TABLE IF NOT EXISTS `datos_base_custodia` (
-  `id_datos_base_custodia` int NOT NULL AUTO_INCREMENT,
-  `concepto` varchar(50) NOT NULL,
-  `importe/km` double NOT NULL,
-  PRIMARY KEY (`id_datos_base_custodia`)
-) ENGINE=InnoDB AUTO_INCREMENT=12;
-
--- Volcando datos para la tabla costos_viaje.datos_base_custodia: ~11 rows (aproximadamente)
-INSERT INTO `datos_base_custodia` (`id_datos_base_custodia`, `concepto`, `importe/km`) VALUES
-	(1, 'Costo por llanta', 1000),
-	(2, 'Vida util KM por llanta', 50000),
-	(3, 'Pago operador X dia', 375),
-	(4, 'Pago ayudante X dia ', 0),
-	(5, 'Intervalo mntto en Km', 10000),
-	(6, 'Cantidad de llantas', 4),
-	(7, 'Costo mntto x auto', 1500),
-	(8, 'Dias x año sin domingos', 313),
-	(9, 'Plataforma GPS mensual en pesos', 110.2),
-	(10, 'Linea cel datos GPS mensual en pesos', 69.6),
-	(11, 'Linea celular operador mensual', 232);
-
--- Volcando estructura para tabla costos_viaje.datos_camion
-CREATE TABLE IF NOT EXISTS `datos_camion` (
-  `id_camion` int NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(20) NOT NULL,
-  `placas` varchar(10) DEFAULT NULL,
-  `serie` varchar(10) DEFAULT NULL,
-  `cantidad_llantas` int NOT NULL,
-  `cto_poliza_seguro` double NOT NULL DEFAULT (0),
-  `rendimiento_kmxl` double NOT NULL DEFAULT (0),
-  `pago_operador` double DEFAULT (0),
-  `intervalo_mantto_enkm` double NOT NULL DEFAULT '0',
-  `cto_mantto` double NOT NULL DEFAULT '0',
-  `depreciacion_anual` double NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id_camion`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=7;
-
--- Volcando datos para la tabla costos_viaje.datos_camion: ~6 rows (aproximadamente)
-INSERT INTO `datos_camion` (`id_camion`, `nombre`, `placas`, `serie`, `cantidad_llantas`, `cto_poliza_seguro`, `rendimiento_kmxl`, `pago_operador`, `intervalo_mantto_enkm`, `cto_mantto`, `depreciacion_anual`) VALUES
-	(1, 'Eco1', NULL, NULL, 6, 12159.18, 3.2, 200, 20000, 7790, 25000),
-	(2, 'Eco2', NULL, NULL, 6, 14908.73, 3.4, 200, 15000, 7790, 25000),
-	(3, 'Eco3', NULL, NULL, 10, 17000.21, 3.1, 300, 15000, 7790, 56000),
-	(4, 'Eco6', NULL, NULL, 6, 15243.33, 3.4, 200, 15000, 7790, 25000),
-	(5, 'Hino', NULL, NULL, 6, 21396.68, 5, 200, 10000, 4900, 25000),
-	(6, 'Trailer', NULL, NULL, 18, 41604.85, 2.1, 400, 15000, 7790, 140000);
-
--- Volcando estructura para tabla costos_viaje.datos_custodia
-CREATE TABLE IF NOT EXISTS `datos_custodia` (
-  `id_custidia` int NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(50) NOT NULL,
-  `placas` varchar(50) DEFAULT NULL,
-  `serie` varchar(50) DEFAULT NULL,
-  `depreciacion_anual` double NOT NULL,
-  `cto_poliza_seguro` double NOT NULL,
-  `rendimiento_kmxl` double NOT NULL,
-  PRIMARY KEY (`id_custidia`)
-) ENGINE=InnoDB AUTO_INCREMENT=5;
-
--- Volcando datos para la tabla costos_viaje.datos_custodia: ~4 rows (aproximadamente)
-INSERT INTO `datos_custodia` (`id_custidia`, `nombre`, `placas`, `serie`, `depreciacion_anual`, `cto_poliza_seguro`, `rendimiento_kmxl`) VALUES
-	(1, 'Tsuru', NULL, NULL, 12668.33, 5327.55, 13),
-	(2, 'Tiida', NULL, NULL, 20975.1, 6199.5, 16),
-	(3, 'Tornado', NULL, NULL, 27060, 10477.75, 12),
-	(4, 'City', NULL, NULL, 13950, 4810.48, 13);
-
-/*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
-/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
-/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
